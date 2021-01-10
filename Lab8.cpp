@@ -6,65 +6,65 @@
 using namespace std;
 
 struct Patient {
-    char surname[30];		//Ôàìèëèя
-    char name[30];			//Èìÿ
-    char patronymic[30];	//Îò÷åñòâî
-    char adress[70];        //Àäðåñ
-    int medcard;            //Ìåäêàðòà  
-    int insurance;          //Ñòðàõîâêà
+    char surname[30];		//Фамилия
+    char name[30];			//Имя
+    char patronymic[30];	//Отчество
+    char adress[70];        //Адрес
+    int medcard;            //Медкарта  
+    int insurance;          //Страховка
 };
 
 Patient NewPatient() {
     Patient Bob;
-    cout << "Ôàìèëèÿ -> ";
+    cout << "Фамилия -> ";
     cin >> Bob.surname;
-    cout << "Èìÿ -> ";
+    cout << "Имя -> ";
     cin >> Bob.name;
-    cout << "Îò÷åñòâî -> ";
+    cout << "Отчество -> ";
     cin >> Bob.patronymic;
-    cout << "Àäðåñ -> ";
+    cout << "Адрес -> ";
     cin >> Bob.adress;
-    cout << "Ìåäêàðòà (9-òè çíà÷íîå ÷èñëî) -> ";
+    cout << "Медкарта (9-ти значное число) -> ";
     cin >> Bob.medcard;
-    cout << "Ñòðàõîâêà (9-òè çíà÷íîå ÷èñëî) -> ";
+    cout << "Страховка (9-ти значное число) -> ";
     cin >> Bob.insurance;
     return Bob;
 }
 
-FILE* MyFile;       //Ôàéë
-int CountRegister;  //Êîëè÷åñòâî Ðåãèñòðàöèé (ò.å. çàïèñåé)
+FILE* MyFile;       //Файл
+int CountRegister;  //Количество Регистраций (т.е. записей)
 
 
 void CreateFile() {
     MyFile = fopen("patients.dat", "wb");
     if (MyFile == 0) {
-        cout << "Îøèáêà ïðè îòêðûòèè ôàéëà !\n";
+        cout << "Ошибка при открытии файла !\n";
         exit(1);
     }
-    cout << "\nÔîðìèðîâàíèå ôàéëà íà÷àëîñü ... \n\n";
+    cout << "\nФормирование файла началось ... \n\n";
     CountRegister = 0;
     bool binInput;
-    cout << "Äîáàâèòü çàïèñü î ïàöèåíòå? Äà (1) / Íåò (0) -> ";
+    cout << "Добавить запись о пациенте? Да (1) / Нет (0) -> ";
     cin >> binInput;
     while (binInput) {
         Patient client = NewPatient();
         fwrite(&client, sizeof(Patient), 1, MyFile);
         if (ferror(MyFile) != 0) {
-            cout << "Îøèáêà çàïèñè â ôàéë !\n";
+            cout << "Ошибка записи в файл !\n";
             exit(2);
         }
         CountRegister++;
-        cout << "Äîáàâèòü çàïèñü î ïàöèåíòå? Äà (1) / Íåò (0) -> ";
+        cout << "Добавить запись о пациенте? Да (1) / Нет (0) -> ";
         cin >> binInput;
     }
     fclose(MyFile);
 }
 
 void ReadFile() {
-    cout << "\n×òåíèå ôàéëà íà÷àëîñü ... \n\n";
+    cout << "\nЧтение файла началось ... \n\n";
     MyFile = fopen("patients.dat", "rb");
     if (MyFile == 0) {
-        cout << "Îøèáêà îòêðûòèÿ ôàéëà ! \n";
+        cout << "Ошибка открытия файла ! \n";
         exit(1);
     }
     Patient client;
@@ -72,31 +72,31 @@ void ReadFile() {
     while (!feof(MyFile) && cnt < CountRegister) {
         fread(&client, sizeof(Patient), 1, MyFile);
         if (ferror(MyFile) != 0) {
-            cout << "Îøèáêà ÷òåíèÿ ôàéëà ! \n";
+            cout << "Ошибка чтения файла ! \n";
             exit(4);
         }
         cnt++;
-        cout << "Ôàìèëèÿ -> " << client.surname << '\n';
-        cout << "Èìÿ -> " << client.name << '\n';
-        cout << "Îò÷åñòâî -> " << client.patronymic << '\n';
-        cout << "Àäðåñ -> " << client.adress << '\n';
-        cout << "Íîìåð ìåäêàðòû -> " << client.medcard << '\n';
-        cout << "Íîìåð ñòðàõîâêè -> " << client.insurance << '\n';
+        cout << "Фамилия -> " << client.surname << '\n';
+        cout << "Имя -> " << client.name << '\n';
+        cout << "Отчество -> " << client.patronymic << '\n';
+        cout << "Адрес -> " << client.adress << '\n';
+        cout << "Номер медкарты -> " << client.medcard << '\n';
+        cout << "Номер страховки -> " << client.insurance << '\n';
     }
     fclose(MyFile);
 }
 
 void AddPatient() {
     FILE* tmp;
-    cout << "\nÄîáàâëåíèå 2-óõ ïàöèåíòîâ â íà÷àëî ôàéëà íà÷àëîñü ... \n\n";
+    cout << "\nДобавление 2-ух пациентов в начало файла началось ... \n\n";
     tmp = fopen("tmp.dat", "wb");
     if (tmp == 0) {
-        cout << "Îøèáêà îòêðûòèÿ ôàéëà \n ";
+        cout << "Ошибка открытия файла \n ";
         exit(1);
     }
     MyFile = fopen("patients.dat", "rb");
     if (MyFile == 0) {
-        cout << "Îøèáêà îòêðûòèÿ ôàéëà ! \n ";
+        cout << "Ошибка открытия файла ! \n ";
         exit(1);
     }
     for (int i = 0; i < 2; ++i) {
@@ -104,7 +104,7 @@ void AddPatient() {
         cout << '\n';
         fwrite(&client, sizeof(Patient), 1, tmp);
         if (ferror(tmp) != 0) {
-            cout << "Îøèáêà çàïèñè ôàéëà ! \n ";
+            cout << "Ошибка записи файла ! \n ";
             exit(2);
         }
     }
@@ -113,12 +113,12 @@ void AddPatient() {
         Patient client;
         fread(&client, sizeof(Patient), 1, MyFile);
         if (ferror(MyFile) != 0) {
-            cout << "Îøèáêà ÷òåíèÿ ôàéëà ! \n";
+            cout << "Ошибка чтения файла ! \n";
             exit(4);
         }
         fwrite(&client, sizeof(Patient), 1, tmp);
         if (ferror(tmp) != 0) {
-            cout << "Îøèáêà çàïèñè ôàéëà ! \n";
+            cout << "Ошибка записи файла ! \n";
             exit(2);
         }
     }
@@ -131,18 +131,18 @@ void AddPatient() {
 
 void DeletePatient() {
     FILE* tmp;
-    cout << "\nÓäàëåíèå ïàöèåíòà íà÷àëîñü ... \n\n";
+    cout << "\nУдаление пациента началось ... \n\n";
     int medcard;
-    cout << "Ââåäèòå íîìåð ìåäêàðòû äëÿ óäàëåíèÿ ïàöèåíòà -> ";
+    cout << "Введите номер медкарты для удаления пациента -> ";
     cin >> medcard;
     MyFile = fopen("patients.dat", "rb");
     if (MyFile == 0) {
-        cout << "Îøèáêà îòêðûòèÿ ôàéëà ! \n";
+        cout << "Ошибка открытия файла ! \n";
         exit(1);
     }
     tmp = fopen("tmp.dat", "wb");
     if (tmp == 0) {
-        cout << "Îøèáêà îòêðûòèÿ ôàéëà ! \n";
+        cout << "Ошибка открытия файла ! \n";
         exit(1);
     }
     int cnt = 0;
@@ -150,13 +150,13 @@ void DeletePatient() {
         Patient client;
         fread(&client, sizeof(Patient), 1, MyFile);
         if (ferror(MyFile) != 0) {
-            cout << "Îøèáêà ÷òåíèÿ ôàéëà ! \n";
+            cout << "Ошибка чтения файла ! \n";
             exit(4);
         }
         if (client.medcard != medcard) {
             fwrite(&client, sizeof(Patient), 1, tmp);
             if (ferror(tmp) != 0) {
-                cout << "Îøèáêà çàïèñè ôàéëà ! \n";
+                cout << "Ошибка записи файла ! \n";
                 exit(2);
             }
         }
@@ -176,10 +176,10 @@ int main() {
     CreateFile();
     ReadFile();
     AddPatient();
-    cout << "\nÔàéë ïîñëå äîáàâëåíèÿ 2-óõ ïàöèåíòîâ\n";
+    cout << "\nФайл после добавления 2-ух пациентов\n";
     ReadFile();
     DeletePatient();
-    cout << "\nÔàéë ïîñëå óäàëåíèÿ ïàöèåíòà\n";
+    cout << "\nФайл после удаления пациента\n";
     ReadFile();
     system("pause");
     return 0;
