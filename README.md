@@ -1,2 +1,0 @@
-# lab
-c++ labs
