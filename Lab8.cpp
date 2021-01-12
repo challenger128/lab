@@ -146,6 +146,7 @@ void DeletePatient() {
         exit(1);
     }
     int cnt = 0;
+    int deleted=0;
     while (!feof(MyFile) && cnt < CountRegister) {
         Patient client;
         fread(&client, sizeof(Patient), 1, MyFile);
@@ -160,13 +161,14 @@ void DeletePatient() {
                 exit(2);
             }
         }
+        else deleted++;
         cnt++;
     }
     fclose(tmp);
     fclose(MyFile);
     remove("patients.dat");
     rename("tmp.dat", "patients.dat");
-    CountRegister--;
+    CountRegister-=deleted;
 }
 
 int main() {
